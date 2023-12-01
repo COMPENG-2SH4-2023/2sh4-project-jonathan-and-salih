@@ -34,6 +34,8 @@ class GameMechs
         
         bool getExitFlagStatus();
         void setExitTrue();
+        bool getLoseFlagStatus();
+        void setLoseFlag();
 
         char getInput();
         void setInput(char this_input);

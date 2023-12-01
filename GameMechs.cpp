@@ -32,9 +32,12 @@ GameMechs::~GameMechs()
 bool GameMechs::getExitFlagStatus()
 {
     return exitFlag;
-
 }
 
+bool GameMechs::getLoseFlagStatus()
+{
+    return loseFlag;
+}
 
 char GameMechs::getInput()
 {
@@ -42,8 +45,19 @@ char GameMechs::getInput()
     {
         input = MacUILib_getChar();        
     }
+
+    switch(input)
+    {
+        case 27:
+            setExitTrue();
+            break;
+        
+        default:
+            break;
+    }
     return input;
 }
+
 
 int GameMechs::getBoardSizeX()
 {
@@ -58,6 +72,11 @@ int GameMechs::getBoardSizeY()
 
 
 void GameMechs::setExitTrue()
+{
+    exitFlag = true;
+}
+
+void GameMechs::setLoseFlag()
 {
     exitFlag = true;
 }

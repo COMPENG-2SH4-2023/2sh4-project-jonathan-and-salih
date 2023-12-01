@@ -4,7 +4,7 @@
 Player::Player(GameMechs* thisGMRef)
 {
     mainGameMechsRef = thisGMRef;
-    myDir = UP;
+    myDir = STOP;
 
     // more actions to be included
     playerPos.setObjPos(mainGameMechsRef->getBoardSizeX() / 2 ,

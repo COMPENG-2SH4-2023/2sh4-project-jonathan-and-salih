@@ -68,9 +68,7 @@ void DrawScreen(void)
     objPos temPos;
     myPlayer->getPlayerPos(temPos);
 
-    /*MacUILib_printf("board %d,%d\n player %d,%d \n symbol %c",
-                    myGM->getBoardSizeX(), myGM->getBoardSizeY(),
-                    temPos.x,temPos.y,temPos.symbol);*/
+    /**/
     
 
     for(int i=0; i < myGM->getBoardSizeY(); i++)
@@ -104,7 +102,9 @@ void DrawScreen(void)
         }
         MacUILib_printf("\n");
     }
-
+    MacUILib_printf("board %d,%d | player %d,%d | symbol %c",
+                    myGM->getBoardSizeX(), myGM->getBoardSizeY(),
+                    temPos.x,temPos.y,temPos.symbol);
 
 }
 
