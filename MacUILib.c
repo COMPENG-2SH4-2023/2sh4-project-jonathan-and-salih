@@ -1,5 +1,5 @@
 #include "MacUILib.h"
-
+#include <unistd.h>
 print_ptr MacUILib_printf;
 
 #ifdef WINDOWS
@@ -50,7 +50,7 @@ print_ptr MacUILib_printf;
 #ifdef POSIX
 
 	#include <ncurses.h>
-	#include <unistd.h>
+
 	
 	void MacUILib_init(void)
 	{
