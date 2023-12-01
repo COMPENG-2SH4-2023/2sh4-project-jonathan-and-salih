@@ -58,6 +58,7 @@ void GetInput(void)
 void RunLogic(void)
 {
     myPlayer->updatePlayerDir();
+    myPlayer->movePlayer();
 }
 
 void DrawScreen(void)
@@ -67,9 +68,42 @@ void DrawScreen(void)
     objPos temPos;
     myPlayer->getPlayerPos(temPos);
 
-    MacUILib_printf("board %d,%d\n player %d,%d \n symbol %c",
+    /*MacUILib_printf("board %d,%d\n player %d,%d \n symbol %c",
                     myGM->getBoardSizeX(), myGM->getBoardSizeY(),
-                    temPos.x,temPos.y,temPos.symbol); 
+                    temPos.x,temPos.y,temPos.symbol);*/
+    
+
+    for(int i=0; i < myGM->getBoardSizeY(); i++)
+    {
+        // print bottom and top border 
+        for(int k=0; k < myGM->getBoardSizeX(); k++)
+        {
+            //print top and bottom border
+            if(i == myGM->getBoardSizeY()-1 || i == 0)
+            {
+                MacUILib_printf("#");
+            }
+
+            //print right and left border
+            if(i > 0 && i < myGM->getBoardSizeY()-1)
+            {
+                if(k == myGM->getBoardSizeX()-2 || k==0)
+                {
+                    MacUILib_printf("#"); 
+                }
+
+                if (k == temPos.x && i== temPos.y)
+                {
+                MacUILib_printf("%c", temPos.symbol);
+                }
+                else
+                {
+                    MacUILib_printf(" ");                    
+                }   
+            }
+        }
+        MacUILib_printf("\n");
+    }
 
 
 }
