@@ -88,7 +88,7 @@ void GameMechs::setInput(char this_input)
 
 void GameMechs::clearInput()
 {
-    input = 0;
+    input = NULL;
 }
 
 int GameMechs::getScore()
