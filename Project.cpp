@@ -3,6 +3,7 @@
 #include "objPos.h"
 #include "Player.h"
 #include "GameMechs.h"
+#include "Food.h"
 
 
 using namespace std;
@@ -11,6 +12,8 @@ using namespace std;
 
 GameMechs* myGM;
 Player* myPlayer;
+Food* myFood;
+
 
 void Initialize(void);
 void GetInput(void);
@@ -46,6 +49,9 @@ void Initialize(void)
     
     myGM = new GameMechs(26,13);
     myPlayer = new Player(myGM);
+    myFood= new Food(*myGM);
+    objPosArrayList blockOff;
+    myFood->generateFood(blockOff);
 
     
 }
@@ -60,15 +66,25 @@ void RunLogic(void)
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
     myGM->clearInput();
+
+
+    objPosArrayList blockOff;
+    myFood->generateFood(blockOff);
 }
 
 void DrawScreen(void)
 {
     MacUILib_clearScreen();
 
-    objPos temPos;
-    myPlayer->getPlayerPos(temPos);
+    objPos playerPos;
+    myPlayer->getPlayerPos(playerPos);
 
+    objPos foodPos;
+    myFood->getFoodPos(foodPos);
+
+    /*
+    objPosArrayList* temPos2;
+    myFood->generateFood(temPos2);*/
 
     for(int i=0; i < myGM->getBoardSizeY(); i++)
     {
@@ -89,9 +105,14 @@ void DrawScreen(void)
                     MacUILib_printf("#"); 
                 }
 
-                if (k == temPos.x && i== temPos.y)
+                if (k == playerPos.x && i== playerPos.y)
                 {
-                MacUILib_printf("%c", temPos.symbol);
+                MacUILib_printf("%c", playerPos.symbol);
+                }
+                else if(k == foodPos.x && i== foodPos.y)
+                {
+
+                    MacUILib_printf("%c", foodPos.symbol);
                 }
                 else
                 {
@@ -103,7 +124,7 @@ void DrawScreen(void)
     }
     MacUILib_printf("board %d,%d | player %d,%d | symbol %c",
                     myGM->getBoardSizeX(), myGM->getBoardSizeY(),
-                    temPos.x,temPos.y,temPos.symbol);
+                    playerPos.x,playerPos.y,playerPos.symbol);
     MacUILib_printf(" input: %c", myGM->getInput());
 
 }

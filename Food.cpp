@@ -1,18 +1,20 @@
-#inlcude "Food.h"
+#include "Food.h"
+
 
 Food::Food(GameMechs& gameMechanics)
 {
+    mechRef = &gameMechanics;
     foodPos.x = 0;
     foodPos.y = 0;
-    foodPos.symbol = 'p';
-    mechRef = &gameMechanics;
+    foodPos.symbol = '*';
+    
 }
 
-void generateFood(objPosArrayList &blockOff)
+void Food::generateFood(objPosArrayList &blockOff)
 {
     int randomX;
     int randomY;
-
+    bool okPos = true;
     srand(static_cast<unsigned int>(time(nullptr)));
 
     do
@@ -21,8 +23,8 @@ void generateFood(objPosArrayList &blockOff)
         okPos = true;
 
         //randomly generate x and y coordinates
-        randomX = rand() % ((mechRef -> getBoardSizeX()) - 2) + 1; 
-        randomY = rand() % ((mechRef -> getBoardSizeY()) - 2) + 1;
+        randomX = rand() % ((mechRef->getBoardSizeX()) - 2) + 1; 
+        randomY = rand() % ((mechRef->getBoardSizeY()) - 2) + 1;
 
         // iterate through the blockOff list to determine any conflicts between the current and previous position
         for(int i = 0; i < blockOff.getSize(); ++i)
@@ -31,7 +33,7 @@ void generateFood(objPosArrayList &blockOff)
             objPos tempPosition;
 
             //store the value of each i into tempPosition
-            blockOff.getElement(i, tempPosition);
+            blockOff.getElement(tempPosition, i);
 
             // check if that indexes value matches with the random positions generated
             if(tempPosition.x == randomX && tempPosition.y == randomY)
@@ -50,4 +52,8 @@ void generateFood(objPosArrayList &blockOff)
     foodPos.y = randomY;
 
   
+}
+void Food::getFoodPos(objPos &returnPos)
+{
+    returnPos = foodPos;
 }

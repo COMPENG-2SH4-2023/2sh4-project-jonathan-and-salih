@@ -20,6 +20,6 @@ class Food
     Food(GameMechs& gameMechanics);
     void getFoodPos(objPos &returnPos);
     void generateFood(objPosArrayList &blockOff);
-}
+};
 
 #endif
