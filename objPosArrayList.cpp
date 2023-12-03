@@ -43,9 +43,6 @@ void objPosArrayList::insertHead(objPos thisPos)
 //size of list (goes form left to right)
 void objPosArrayList::insertTail(objPos thisPos)
 {
-    for (int i = 0; i < sizeList ; i ++){
-        aList[i].setObjPos(aList[i]);
-    }
     aList[sizeList].setObjPos(thisPos);
     sizeList++;
 }

@@ -15,11 +15,7 @@ Player::Player(GameMechs* thisGMRef, Food* thisFood)
                          '0');
     playerPosList->insertHead(startPos);
     
-    for (int i = 1; i < 4; i++)
-    {
-        objPos nextPos(startPos.x + i, startPos.y, '0');
-        playerPosList->insertTail(nextPos);
-    }
+
 }
 
 
@@ -43,33 +39,21 @@ void Player::updatePlayerDir()
     switch (mainGameMechsRef->getInput())
     {
     case 'w':
-        if (myDir!= UP && myDir != DOWN)
-            myDir = UP;
-        break;
     case 'W':
         if (myDir!= UP && myDir != DOWN)
             myDir = UP;
         break;
     case 's':
-        if (myDir!= UP && myDir != DOWN)
-            myDir = DOWN;
-        break;
     case 'S':
         if (myDir!= UP && myDir != DOWN)
             myDir = DOWN;
         break;
     case 'a':
-        if (myDir!= LEFT && myDir != RIGHT)
-            myDir = LEFT;
-        break;
     case 'A':
         if (myDir!= LEFT && myDir != RIGHT)
             myDir = LEFT;
         break;
     case 'd':
-        if (myDir!= LEFT && myDir != RIGHT)
-            myDir = RIGHT;
-        break;
     case 'D':
         if (myDir!= LEFT && myDir != RIGHT)
             myDir = RIGHT;
@@ -77,11 +61,14 @@ void Player::updatePlayerDir()
     default:
         break;
     }
+    mainGameMechsRef->clearInput();
             
 }
 
 void Player::movePlayer()
 {
+    
+
     // PPA3 Finite State Machine logic
     objPos playerPos;
     playerPosList->getHeadElement(playerPos);
@@ -114,19 +101,19 @@ void Player::movePlayer()
     }
     if(checkFoodConsumption())
     {
-        //insert head
-        playerPosList->insertHead(playerPos);
-        //generate new food
-        objPosArrayList blockOff;
-        myFood->generateFood(blockOff);
+        increasePlayerLength();
     }
     else
     {
         //insert head and remove tail aka moving
+        
+        checkSelfCollision();
         playerPosList->insertHead(playerPos);
         playerPosList->removeTail();
+        
+        
     }
-
+    
 }
 
 
@@ -137,15 +124,39 @@ bool Player::checkFoodConsumption()
     playerPosList->getHeadElement(playerPos);
     objPos foodPos;
     myFood->getFoodPos(foodPos);
-    if (foodPos.x == playerPos.x && foodPos.y == playerPos.y)
+    if (foodPos.isPosEqual(&playerPos))
         return true;
     else
         return false;
 
 }
 void Player::increasePlayerLength()
-{}
+{
+    //insert head
+    objPos playerPos;
+    playerPosList->getHeadElement(playerPos);
+    playerPosList->insertHead(playerPos);
+    //generate new food
+    objPosArrayList blockOff;
+    myFood->generateFood(blockOff);
+    mainGameMechsRef->incrementScore();
+}
 bool Player::checkSelfCollision()
 {
+    //insert head
+    objPos headPos;
+    playerPosList->getHeadElement(headPos);
+    objPos tailPos;
+    for (int i = 2; i < playerPosList->getSize();i++){
+        //checks each element except head
+        //if an element matches head then there is collision
+        playerPosList->getElement(tailPos,i);
+        if (headPos.isPosEqual(&tailPos)){
+            mainGameMechsRef->setExitTrue();
+            mainGameMechsRef->setLoseFlag();
+            return true;
+        }
+    }
+    return false;
 
 }

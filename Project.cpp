@@ -55,10 +55,7 @@ void GetInput(void)
 void RunLogic(void)
 {
     myPlayer->updatePlayerDir();
-    myPlayer->movePlayer();
-    myGM->clearInput();
-
-    
+    myPlayer->movePlayer(); 
 }
 
 void DrawScreen(void)
@@ -70,10 +67,7 @@ void DrawScreen(void)
     objPos foodPos;
     myFood->getFoodPos(foodPos);
 
-    /*
-    objPosArrayList* temPos2;
-    myFood->generateFood(temPos2);*/
-    
+
     for (int i = 0; i < myGM->getBoardSizeY(); i++)
     {
         // print bottom and top border
@@ -127,7 +121,8 @@ void DrawScreen(void)
     MacUILib_printf("board %d,%d | player %d,%d | symbol %c",
                     myGM->getBoardSizeX(), myGM->getBoardSizeY(),
                     playerPos.x, playerPos.y, playerPos.symbol);
-    MacUILib_printf(" input: %c", myGM->getInput());
+    MacUILib_printf(" input: %c\n", myGM->getInput());
+    MacUILib_printf(" Score: %d", myGM->getScore());
 }
 
 void LoopDelay(void)
