@@ -125,7 +125,7 @@ void DrawScreen(void)
         }
         MacUILib_printf("\n");
     }
-    MacUILib_printf("Use W,A,S,D to move\n");
+    MacUILib_printf("Use W,A,S,D to move, and Esc to end game\n");
     MacUILib_printf("'%c' Gives 5 points and makes Snake 10 units bigger\n'$' gives 10 points. Have Fun!!\n",'%');
     MacUILib_printf("Score: %d", myGM->getScore());
 }
