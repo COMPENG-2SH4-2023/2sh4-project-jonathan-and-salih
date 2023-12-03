@@ -22,16 +22,7 @@ GameMechs::GameMechs(int boardX, int boardY)
 }
 
 // do you need a destructor?
-/* 
-GameMechs::~GameMechs()
-{
-    for(int i = 0; i < boardSizeY; i++)
-    {
-        delete [] gameBoard[i];
-    }
-    delete [] gameBoard;
-}
-*/
+// no distructor needed since memory isnt allocated for anything in gameMechs
 
 bool GameMechs::getExitFlagStatus()
 {

@@ -63,6 +63,13 @@ void objPosArrayList::removeTail()
     sizeList--;
 }
 
+
+
+void objPosArrayList::removeElements()
+{
+        sizeList = 0;   
+}
+
 //gives the position of index 0/head
 void objPosArrayList::getHeadElement(objPos &returnPos)
 {

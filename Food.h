@@ -13,12 +13,14 @@ class GameMechs;
 class Food
 {
     private:
-    objPos foodPos;
+    //objPos foodPos;
     GameMechs* mechRef;
+    objPosArrayList* foodBucket;
 
     public:
     Food(GameMechs& gameMechanics);
-    void getFoodPos(objPos &returnPos);
+    ~Food();
+    objPosArrayList* getFoodPos();
     void generateFood(objPosArrayList &blockOff);
 };
 
