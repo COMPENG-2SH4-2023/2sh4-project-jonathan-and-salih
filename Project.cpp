@@ -125,13 +125,9 @@ void DrawScreen(void)
         }
         MacUILib_printf("\n");
     }
-    objPos playerPos;
-    playerPosList->getElement(playerPos,0);
-    MacUILib_printf("board %d,%d | player %d,%d | symbol %c",
-                    myGM->getBoardSizeX(), myGM->getBoardSizeY(),
-                    playerPos.x, playerPos.y, playerPos.symbol);
-    MacUILib_printf("Use W,A,S,D to move, %", " Gives 5 points and makes Snake 10 units bigger\n$ gives 10 points. Have Fun!!");
-    MacUILib_printf(" Score: %d", myGM->getScore());
+    MacUILib_printf("Use W,A,S,D to move\n");
+    MacUILib_printf("'%c' Gives 5 points and makes Snake 10 units bigger\n'$' gives 10 points. Have Fun!!\n",'%');
+    MacUILib_printf("Score: %d", myGM->getScore());
 }
 
 void LoopDelay(void)
