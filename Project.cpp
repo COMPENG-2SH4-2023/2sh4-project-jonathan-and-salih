@@ -5,15 +5,13 @@
 #include "GameMechs.h"
 #include "Food.h"
 
-
 using namespace std;
 
 #define DELAY_CONST 100000
 
-GameMechs* myGM;
-Player* myPlayer;
-Food* myFood;
-
+GameMechs *myGM;
+Food *myFood;
+Player *myPlayer;
 
 void Initialize(void);
 void GetInput(void);
@@ -22,14 +20,12 @@ void DrawScreen(void);
 void LoopDelay(void);
 void CleanUp(void);
 
-
-
 int main(void)
 {
 
     Initialize();
 
-    while(myGM->getExitFlagStatus() == false)  
+    while (myGM->getExitFlagStatus() == false)
     {
         GetInput();
         RunLogic();
@@ -38,27 +34,22 @@ int main(void)
     }
 
     CleanUp();
-
 }
-
 
 void Initialize(void)
 {
     MacUILib_init();
     MacUILib_clearScreen();
-    
-    myGM = new GameMechs(26,13);
-    myPlayer = new Player(myGM);
-    myFood= new Food(*myGM);
+
+    myGM = new GameMechs(26, 13);
+    myFood = new Food(*myGM);
+    myPlayer = new Player(myGM,myFood);
     objPosArrayList blockOff;
     myFood->generateFood(blockOff);
-
-    
 }
 
 void GetInput(void)
 {
-   
 }
 
 void RunLogic(void)
@@ -67,17 +58,14 @@ void RunLogic(void)
     myPlayer->movePlayer();
     myGM->clearInput();
 
-
-    objPosArrayList blockOff;
-    myFood->generateFood(blockOff);
+    
 }
 
 void DrawScreen(void)
 {
     MacUILib_clearScreen();
 
-    objPos playerPos;
-    myPlayer->getPlayerPos(playerPos);
+    objPosArrayList *playerPosList = myPlayer->getPlayerPos();
 
     objPos foodPos;
     myFood->getFoodPos(foodPos);
@@ -85,48 +73,61 @@ void DrawScreen(void)
     /*
     objPosArrayList* temPos2;
     myFood->generateFood(temPos2);*/
-
-    for(int i=0; i < myGM->getBoardSizeY(); i++)
+    
+    for (int i = 0; i < myGM->getBoardSizeY(); i++)
     {
-        // print bottom and top border 
-        for(int k=0; k < myGM->getBoardSizeX()+1; k++)
+        // print bottom and top border
+        for (int k = 0; k < myGM->getBoardSizeX() + 1; k++)
         {
-            //print top and bottom border
-            if(i == myGM->getBoardSizeY()-1 || i == 0)
+            // print top and bottom border
+            if (i == myGM->getBoardSizeY() - 1 || i == 0)
             {
                 MacUILib_printf("#");
             }
 
-            //print right and left border
-            if(i > 0 && i < myGM->getBoardSizeY()-1)
+            // print right and left border
+            if (i > 0 && i < myGM->getBoardSizeY() - 1)
             {
-                if(k == myGM->getBoardSizeX()-1 || k==0)
+                if (k == myGM->getBoardSizeX() - 1 || k == 0)
                 {
-                    MacUILib_printf("#"); 
+                    MacUILib_printf("#");
                 }
 
-                if (k == playerPos.x && i== playerPos.y)
-                {
-                MacUILib_printf("%c", playerPos.symbol);
-                }
-                else if(k == foodPos.x && i== foodPos.y)
+                if (k == foodPos.x && i == foodPos.y)
                 {
 
                     MacUILib_printf("%c", foodPos.symbol);
                 }
                 else
                 {
-                    MacUILib_printf(" ");                    
-                }   
+                    bool isPlayerPos = false;
+                    for (int j = 0; j < playerPosList->getSize(); j++)
+                    {
+                        objPos playerPos;
+                        playerPosList->getElement(playerPos, j);
+
+                        if (k == playerPos.x && i == playerPos.y)
+                        {
+                            MacUILib_printf("%c", playerPos.symbol);
+                            isPlayerPos = true;
+                            break;
+                        }
+                    }
+                    if (!isPlayerPos)
+                    {
+                        MacUILib_printf(" ");
+                    }
+                }
             }
         }
         MacUILib_printf("\n");
     }
+    objPos playerPos;
+    playerPosList->getElement(playerPos,0);
     MacUILib_printf("board %d,%d | player %d,%d | symbol %c",
                     myGM->getBoardSizeX(), myGM->getBoardSizeY(),
-                    playerPos.x,playerPos.y,playerPos.symbol);
+                    playerPos.x, playerPos.y, playerPos.symbol);
     MacUILib_printf(" input: %c", myGM->getInput());
-
 }
 
 void LoopDelay(void)
@@ -134,10 +135,9 @@ void LoopDelay(void)
     MacUILib_Delay(DELAY_CONST); // 0.1s delay
 }
 
-
 void CleanUp(void)
 {
-    MacUILib_clearScreen();    
-  
+    MacUILib_clearScreen();
+
     MacUILib_uninit();
 }

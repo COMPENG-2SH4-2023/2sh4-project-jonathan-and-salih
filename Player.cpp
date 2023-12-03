@@ -1,27 +1,38 @@
 #include "Player.h"
 
 
-Player::Player(GameMechs* thisGMRef)
+Player::Player(GameMechs* thisGMRef, Food* thisFood)
 {
     mainGameMechsRef = thisGMRef;
     myDir = STOP;
+    myFood = thisFood;
 
     // more actions to be included
-    playerPos.setObjPos(mainGameMechsRef->getBoardSizeX() / 2 ,
+    playerPosList = new objPosArrayList();
+    
+    objPos startPos(mainGameMechsRef->getBoardSizeX() / 2 ,
                         mainGameMechsRef->getBoardSizeY() / 2 ,
                          '0');
+    playerPosList->insertHead(startPos);
+    
+    for (int i = 1; i < 4; i++)
+    {
+        objPos nextPos(startPos.x + i, startPos.y, '0');
+        playerPosList->insertTail(nextPos);
+    }
 }
 
 
 Player::~Player()
 {
     // delete any heap members here
+    delete playerPosList;
 }
 
-void Player::getPlayerPos(objPos &returnPos)
+objPosArrayList* Player::getPlayerPos()
 {
     // return the reference to the playerPos arrray list
-    returnPos.setObjPos(playerPos.x, playerPos.y, playerPos.symbol);
+    return playerPosList;
     
 }
 
@@ -72,10 +83,15 @@ void Player::updatePlayerDir()
 void Player::movePlayer()
 {
     // PPA3 Finite State Machine logic
+    objPos playerPos;
+    playerPosList->getHeadElement(playerPos);
+    //objPos playerPos = headPos;
+    
+
     switch(myDir){
     case LEFT:
         playerPos.x--;
-        if (playerPos.x == 0)
+        if (playerPos.x == -1)
             playerPos.x = mainGameMechsRef->getBoardSizeX() - 2;
         break;
     case RIGHT:
@@ -96,5 +112,40 @@ void Player::movePlayer()
     default:
         break;
     }
+    if(checkFoodConsumption())
+    {
+        //insert head
+        playerPosList->insertHead(playerPos);
+        //generate new food
+        objPosArrayList blockOff;
+        myFood->generateFood(blockOff);
+    }
+    else
+    {
+        //insert head and remove tail aka moving
+        playerPosList->insertHead(playerPos);
+        playerPosList->removeTail();
+    }
+
 }
 
+
+bool Player::checkFoodConsumption()
+{
+    //if food is in the same position as head reaturn true
+    objPos playerPos;
+    playerPosList->getHeadElement(playerPos);
+    objPos foodPos;
+    myFood->getFoodPos(foodPos);
+    if (foodPos.x == playerPos.x && foodPos.y == playerPos.y)
+        return true;
+    else
+        return false;
+
+}
+void Player::increasePlayerLength()
+{}
+bool Player::checkSelfCollision()
+{
+
+}
