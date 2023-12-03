@@ -92,11 +92,7 @@ void Player::movePlayer()
     default:
         break;
     }
-    if (checkFoodConsumption())
-    {
-        increasePlayerLength();
-    }
-    else
+    if (!checkFoodConsumption())
     {
         // insert head and remove tail aka moving
 
@@ -128,11 +124,12 @@ bool Player::checkFoodConsumption()
                     mainGameMechsRef->incrementScore();
                 for (int i = 0; i <= 10; i++)
                     increasePlayerLength();
-            }
-            if (foodPos.symbol == '$')
+            }else if (foodPos.symbol == '$')
             {
                 for (int i = 0; i < 9; i++)
                     mainGameMechsRef->incrementScore();
+            } else{
+                increasePlayerLength();
             }
             foodBucket->removeElements();
             objPosArrayList blockOff;
